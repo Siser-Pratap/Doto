@@ -1,35 +1,93 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, {useState} from 'react';
+import Navbar from "./components/Navbar";
+import Description from "./components/Description";
+import Dynamic from "./components/Dynamic";
+import To from "./components/To";
+import Card from "./components/Card";
+import Footer from "./components/Footer";
+import Features from "./components/Features";
+import Find from "./components/Find";
+
 
 function App() {
-  const [count, setCount] = useState(0)
+   
+  const [tasks, setnewtask]=useState([]);
+
+
+
+
+
+  function addNote(newNote){
+      setnewtask(prevNote=>{
+          return [...prevNote, newNote];
+      });
+  }
+
+  function deleteTask(id){
+    setnewtask(prevNote=>{
+      return prevNote.filter((taskitem, index)=>{
+        return index !== id;
+      });
+    });
+  }
+
+
+  function deleteAllTask(){
+    setnewtask([]);
+  }
+
+
+  function s(){
+    return tasks.length;
+  }
+
+  // function completeTask(id){
+  //   const [style, settaskstyle]=useState("none");
+
+  //   tasks.map((taskitem, index)=>{
+  //         if (index===id){
+  //           taskitem.title.style.text-decoration = "line-through";
+  //         }
+  //   })
+
+
+
+  // }
+
+
+
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+       <Navbar />
+            <Description />
+            <Dynamic />
+            <To onAdd={addNote}/>
+            <div className="dialogue">
+            {tasks.map((taskitem, index)=>{
+                return (
+                    <Card 
+                        key={index}
+                        id={index}
+                        title={taskitem.title}
+                        content={taskitem.content}
+                        onDelete={deleteTask}
+                        // onComplete={completeTask}
+                        
+                        // onEdit={editNote}
+                        />
+                );
+            })}
+            </div>
+            
+            {/* <Find /> */}
+            <Features deleteAll={deleteAllTask}/>
+            <Footer />
+    
+    
     </>
-  )
+  );
 }
 
-export default App
+export default App;
+
